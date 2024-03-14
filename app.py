@@ -5,6 +5,8 @@ from modules.db import add_user_to_db, login_user_from_db
 from modules.api_calls import get_weather
 from datetime import timedelta
 import os
+from gevent.pywsgi import WSGIServer
+
 
 """
 	This a weather app built using flask. 
@@ -109,4 +111,6 @@ def page_not_found(e):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # app.run(debug=True)
+    http_server = WSGIServer(('', 5000), app)
+    http_server.serve_forever()
