@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static',filename='styles/styles.css') }}"
+    />
+
+    <!-- <link rel="stylesheet" type="text/css" href="../styles/styles.css" /> -->
+    <title>Weather App</title>
+    <script>
+      function removeFlash() {
+        const element = document.getElementById("div_flash");
+        element.remove();
+      }
+    </script>
+  </head>
+  <!-- {% with messages = get_flashed_messages() %} {% if messages %}
+  <ul class="flashes" id=”div_flash”>
+    {% for message in messages %}
+    <li>{{ message }}</li>
+    <input
+      type="”button”"
+      value="&#10006"
+      onclick="removeFlash()"
+      right”
+    />
+    {% endfor %}
+  </ul>
+  {% endif %} {% endwith %} -->
+  <body class="text-center" cz-shortcut-listen="true">
+    <div class="container mt-5">
+      <div class="form">
+        <form
+          action="/home"
+          class="form-signin d-flex flex-column bd-highlight m-6 mb-3"
+          method="POST"
+        >
+          <div class="twelve mb-3">
+            <h1>What's The Weather</h1>
+          </div>
+          <label for="location" class="sr-only">Enter a City/Country</label>
+          <input
+            type="text"
+            id="location"
+            class="form-control"
+            placeholder="Enter a City/Country"
+            name="location"
+            autofocus=""
+          />
+          <button
+            class="highlight-button btn btn-medium button xs-margin-bottom-five mt-2"
+            type="submit"
+          >
+            Search
+          </button>
+          {% if validate %}
+          <p class="validate mt-1">{{validate}}</p>
+          {% endif %}
+          <p class="mt-2">
+            <a href="{{ url_for('logout') }}">logout</a>
+          </p>
+          <p class="mt-5 mb-3 text-muted">© Ziv Gliser</p>
+        </form>
+      </div>
+      {% if data %}
+      <div class="d-flex flex-row justify-content-center align-items-center">
+        <div class="weather__card">
+          <div
+            class="d-flex flex-row justify-content-center align-items-center"
+          >
+            <div class="p-3">
+              <h2>{{data.currentConditions.temp}}&deg;</h2>
+            </div>
+            <div class="p-3">
+              <img
+                class="weather_icon_title"
+                src="{{url_for('static', filename=''+data.currentConditions.icon)+'.png'}}"
+              />
+            </div>
+            <div class="p-3">
+              <h5>{{data.currentConditions.datetime}}</h5>
+              <h2 class="city_title">{{data.address}}</h2>
+              <h5 class="country_title">{{country}}</h5>
+
+              <span class="weather__description"
+                >{{data.currentConditions.conditions}}</span
+              >
+            </div>
+          </div>
+          <div
+            class="weather__status d-flex flex-row justify-content-center align-items-center mt-3"
+          >
+            <div class="p-4 d-flex justify-content-center align-items-center">
+              <img src="https://svgur.com/i/oHw.svg" />
+              <span>{{data.currentConditions.humidity}}%</span>
+            </div>
+            <div class="p-4 d-flex justify-content-center align-items-center">
+              <img src="https://svgur.com/i/oH_.svg" />
+              <span>{{data.currentConditions.pressure}}mB</span>
+            </div>
+            <div class="p-4 d-flex justify-content-center align-items-center">
+              <img src="https://svgur.com/i/oKS.svg" />
+              <span>{{data.currentConditions.windspeed}} km/h</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="weather_forcast">
+        <div
+          class="weather__forecast d-flex flex-row justify-content-center align-items-center mt-3"
+        >
+          {% for i in range(7)%}
+          <div
+            class="weather_card p-4 d-flex flex-column justify-content-center align-items-center"
+          >
+            <span>{{days_list[i]}}</span>
+            <img
+              class="weather_icon mb-1"
+              src="{{url_for('static', filename=''+data.days[i].icon)+'.png'}}"
+            />
+            <span
+              >{{data.days[i].hours[8].temp}}&deg; -
+              {{data.days[i].hours[20].temp}}&deg;
+            </span>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %} {% if not_found %}
+      <h3>Location not found, try again!</h3>
+      {% endif %}
+    </div>
+  </body>
+</html>
