@@ -2,7 +2,7 @@ from pymongo import MongoClient
 import bcrypt 
 import os
 
-client = MongoClient(os.environ.get("DB_URI"), connect=False)
+client = MongoClient(os.environ.get('DB_URI'), connect=False)
 db = client.WeatherApp
 users = db.users
 
